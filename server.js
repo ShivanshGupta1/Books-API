@@ -21,31 +21,27 @@ mongoclient
       console.log("Sever has initialised");
     });
     app.get("/", function (req, res) {
-      let age  = req.query.age;
+      let age = req.query.age;
       bookCollection
         .find()
         .toArray()
         .then((result) => {
-               for (var i in result) {
+              res.send(new Promise((resolve, reject) => {
+                if (9 >= age-3) {
+                  console.log(result[age - 3].books);
+                  resolve(result[age-3].books);
+                } else {
+                  reject(
+                    "ERROR: Cannot find age you are looking for! Ages currently between 3-11"
+                  );
+                }
+              })
+          )
+    })
+        }) 
             
-                       
-                   let myPromise = new Promise((resolve, reject) => {
-                     if (result[i].age == age) {
-                       resolve(result[i].books);
-                     } else {
-                       reject(
-                         "ERROR: Cannot find age you are looking for! Ages currently between 3-11."
-                       );
-                     }
-                   });
-                 
-                 res.send(myPromise)
-        
-               }
-        })
         .catch((error) => {
           console.error(error);
         });
-    
     });
-  });
+

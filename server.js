@@ -24,24 +24,26 @@ mongoclient
       let age = req.query.age;
       bookCollection
         .find()
+
         .toArray()
         .then((result) => {
-              res.send(new Promise((resolve, reject) => {
-                if (9 >= age-3) {
-                  console.log(result[age - 3].books);
-                  resolve(result[age-3].books);
-                } else {
-                  reject(
-                    "ERROR: Cannot find age you are looking for! Ages currently between 3-11"
-                  );
-                }
-              })
-          )
-    })
-        }) 
+          return new Promise((resolve, reject) => {
+            try {
+              console.log(result[age - 3].books);
+resolve(result[age - 3].books);
+            }
+              
+        catch {
+ reject(
+   "ERROR: Cannot find age you are looking for! Ages currently between 3-11"
+ );
+        }
+             
             
+          });
+        })
         .catch((error) => {
           console.error(error);
         });
     });
-
+  });

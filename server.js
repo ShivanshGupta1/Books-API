@@ -1,8 +1,6 @@
 const mongoclient = require("mongodb").MongoClient;
 const express = require("express");
 const app = express();
-const bodyparser = require("body-parser");
-app.use(bodyparser.urlencoded({ extended: true }));
 const port = process.env.PORT || 3000;
 
 mongoclient
@@ -17,7 +15,7 @@ mongoclient
     console.log("API DB Connection Succesful");
     const db = client.db("BooksDB");
     const bookCollection = db.collection("AgeBooks");
-    app.listen(port, function (req, res) {
+    app.listen(3000, function (req, res) {
       console.log("Sever has initialised");
     });
     app.get("/", function (req, res) {
@@ -28,22 +26,25 @@ mongoclient
         .toArray()
         .then((result) => {
           return new Promise((resolve, reject) => {
-            try {
-              console.log(result[age - 3].books);
+               if (age){
+
 resolve(result[age - 3].books);
             }
-              
-        catch {
- reject(
+            
+ 
+reject(
    "ERROR: Cannot find age you are looking for! Ages currently between 3-11"
  );
-        }
+   
              
             
           });
         })
         .catch((error) => {
           console.error(error);
+        
+        
         });
     });
   });
+
